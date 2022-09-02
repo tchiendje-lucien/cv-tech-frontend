@@ -1,0 +1,130 @@
+<div class="">
+  <div class="card">
+    <div class="card-header">
+      <div class="col col-xs-6 text-right">
+        <button
+          type="button"
+          class="btn btn-sm btn-primary btn-create"
+          data-toggle="modal"
+          data-target=".bd-newCdtModat-modal-lg"
+        >
+          Nouveau
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table_wrapper">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nom complet</th>
+              <th scope="col">Date de naissance</th>
+              <th scope="col">Sexe</th>
+              <th scope="col">Civilité</th>
+              <th scope="col">Adresse</th>
+              <th scope="col">Téléphone</th>
+              <th scope="col">Nationalité</th>
+              <th scope="col">Ville de residance</th>
+              <th scope="col">Type de pers</th>
+              <th scope="col">Specialté</th>
+              <th scope="col">Niv.Academique</th>
+              <th scope="col">Etat du dossier</th>
+              <th scope="col">Année d'exp</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>Otto</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Candidate Modal -->
+<div
+  class="modal fade bd-newCdtModat-modal-lg"
+  id="newCdtModat"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="newCdtModatLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newCdtModatLabel">Nouveau candidat</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+          <!-- User's Credentials  -->
+          <fieldset class="form-group border p-3">
+            <legend class="w-auto px-2">User's Credentials</legend>
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input
+                type="text"
+                class="form-control username"
+                id="username"
+                placeholder="Username..."
+                name="username"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input
+                type="email"
+                class="form-control email"
+                id="email"
+                placeholder="Email..."
+                name="email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                class="form-control password"
+                id="password"
+                placeholder="Password..."
+                name="password"
+              />
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-primary">Enreigistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

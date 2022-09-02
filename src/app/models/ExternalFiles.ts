@@ -1,0 +1,27 @@
+import "./assets/pages/waves/css/waves.min.css";
+import "./assets/css/bootstrap/css/bootstrap.min.css";
+import "./assets/pages/waves/css/waves.min.css";
+import "../assets/icon/themify-icons/themify-icons.css";
+import "./assets/icon/font-awesome/css/font-awesome.min.css";
+import "./assets/css/jquery.mCustomScrollbar.css";
+import "./assets/css/style.css";
+
+import "./assets/js/jquery/jquery.min.js";
+import "./assets/js/jquery-ui/jquery-ui.min.js";
+import "./assets/js/popper.js/popper.min.js";
+import "./assets/js/bootstrap/js/bootstrap.min.js";
+import "./assets/pages/widget/excanvas.js";
+import "./assets/pages/waves/js/waves.min.js";
+import "./assets/js/jquery-slimscroll/jquery.slimscroll.js";
+import "./assets/js/modernizr/modernizr.js ";
+import "./assets/js/SmoothScroll.js";
+import "./assets/js/jquery.mCustomScrollbar.concat.min.js";
+import "./assets/js/chart.js/Chart.js";
+import "./assets/pages/widget/amchart/gauge.js";
+import "./assets/pages/widget/amchart/serial.js";
+import "./assets/pages/widget/amchart/light.js";
+import "./assets/pages/widget/amchart/pie.min.js";
+import "./assets/js/pcoded.min.js";
+import "./assets/js/vertical-layout.min.js";
+import "./assets/pages/dashboard/custom-dashboard.js";
+import "./assets/js/script.js";

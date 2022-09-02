@@ -1,0 +1,153 @@
+<div class="theme-loader">
+  <div class="loader-track">
+    <div class="preloader-wrapper">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+      <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Pre-loader end -->
+
+<section class="login-block">
+  <!-- Container-fluid starts -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <!-- Authentication card start -->
+
+        <form
+          class="md-float-material form-material"
+          [formGroup]="login_form"
+          (ngSubmit)="login_user(login_form.value)"
+        >
+          <div class="text-center">
+            <img src="./assets/images/AJC.jpg" alt="logo.png" height="100" />
+          </div>
+          <div class="auth-box card">
+            <div class="card-block">
+              <div class="row m-b-20">
+                <div class="col-md-12">
+                  <h3 class="text-center">Connexion</h3>
+                </div>
+              </div>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                style="background-color: #f8d7da"
+                [hidden]="login_error"
+              >
+                <span style="color: #721c24"
+                  >Identifiant ou mot de passe erroné</span
+                >
+              </div>
+              <div class="form-group form-primary">
+                <input
+                  type="text"
+                  name="userID"
+                  formControlName="userID"
+                  [(ngModel)]="users.userID"
+                  class="form-control"
+                  (ngModelChange0)="login_change_input()"
+                  required=""
+                />
+                <span class="form-bar"></span>
+                <span
+                  *ngIf="userID.invalid && userID.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+                <label class="float-label">Identifiant</label>
+              </div>
+              <br /><br />
+              <div class="form-group form-primary">
+                <input
+                  type="password"
+                  name="password"
+                  formControlName="password"
+                  [(ngModel)]="users.password"
+                  class="form-control"
+                  required=""
+                  (ngModelChange0)="login_change_input()"
+                />
+                <span class="form-bar"></span>
+                <span
+                  *ngIf="password.invalid && password.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+                <label class="float-label">Mot de passe</label>
+              </div>
+              <div class="row m-t-25 text-left">
+                <div class="col-12">
+                  <div class="forgot-phone text-right f-right">
+                    <a href="#" class="text-right f-w-600">
+                      Mot de passe oublié?</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="row m-t-30">
+                <div class="col-md-12">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20"
+                  >
+                    Connexion
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- end of form -->
+      </div>
+      <!-- end of col-sm-12 -->
+    </div>
+    <!-- end of row -->
+  </div>
+  <!-- end of container-fluid -->
+</section>

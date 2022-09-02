@@ -1,0 +1,737 @@
+<div class="page-body">
+  <div class="row">
+    <!-- ============================================================== -->
+    <!-- Types table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Type de candidat</h5>
+        <div class="card-body">
+          <form [formGroup]="type_form" (ngSubmit)="add_type(type_form.value)">
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  formControlName="name"
+                  [(ngModel)]="types.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="types_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="types_name.invalid && types_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_type"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_type"
+                  (click)="cancel_type()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let type_elt of typesList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_type,
+                          id: 'p_type_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowTypes(type_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ type_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ type_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_type_id"
+              (pageChange)="p_type = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Speciality table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Specialité du candidat</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="speciality_form"
+            (ngSubmit)="add_speciality(speciality_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="speciality.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="speciality_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="speciality_name.invalid && speciality_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_speciality"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_speciality"
+                  (click)="cancel_speciality()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let speciality_elt of specialityList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_speciality,
+                          id: 'p_speciality_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowSpeciality(speciality_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ speciality_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ speciality_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_speciality_id"
+              (pageChange)="p_speciality = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Postes table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Poste du candidat</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="postes_form"
+            (ngSubmit)="add_postes(postes_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="postes.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="postes_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="postes_name.invalid && postes_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_postes"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_postes"
+                  (click)="cancel_postes()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let postes_elt of postesList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_postes,
+                          id: 'p_postes_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowPostes(postes_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ postes_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ postes_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_postes_id"
+              (pageChange)="p_postes = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Villes table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Villes de residance du candidat</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="villes_form"
+            (ngSubmit)="add_villes(villes_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="villes.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="villes_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="villes_name.invalid && villes_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_villes"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_villes"
+                  (click)="cancel_villes()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let villes_elt of villesList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_villes,
+                          id: 'p_villes_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowVilles(villes_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ villes_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ villes_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_villes_id"
+              (pageChange)="p_villes = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Academic Level table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Niveau academique du candidat</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="academicLevel_form"
+            (ngSubmit)="add_academicLevel(academicLevel_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="academicLevel.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="academicLevel_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="
+                    academicLevel_name.invalid && academicLevel_name.touched
+                  "
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_academicLevel"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_academicLevel"
+                  (click)="cancel_academicLevel()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let academicLevel_elt of academicLevelList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_academicLevel,
+                          id: 'p_academicLevel_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowAcademicLevel(academicLevel_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ academicLevel_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ academicLevel_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_academicLevel_id"
+              (pageChange)="p_academicLevel = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- Nationality table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Nationalité du candidat</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="nationality_form"
+            (ngSubmit)="add_nationality(nationality_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="nationality.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="nationality_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="nationality_name.invalid && nationality_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_nationality"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_nationality"
+                  (click)="cancel_nationality()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let nationality_elt of nationalityList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_nationality,
+                          id: 'p_nationality_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowNationality(nationality_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ nationality_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ nationality_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_nationality_id"
+              (pageChange)="p_nationality = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- ============================================================== -->
+    <!-- Rules table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Roles des utilisateur</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="rules_form"
+            (ngSubmit)="add_rules(rules_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="rules.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="rules_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="rules_name.invalid && rules_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_rules"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_rules"
+                  (click)="cancel_rules()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let rules_elt of rulesList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_rules,
+                          id: 'p_rules_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowRules(rules_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ rules_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ rules_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_rules_id"
+              (pageChange)="p_rules = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
