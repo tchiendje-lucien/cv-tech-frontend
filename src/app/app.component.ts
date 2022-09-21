@@ -34,6 +34,9 @@ export class AppComponent {
 
   constructor(private route: Router) {}
 
+  decBool: boolean = true;
+  logBool: boolean = true;
+
   ngOnInit() {
     this.verify_login();
   }
@@ -44,6 +47,8 @@ export class AppComponent {
       sessionStorage.getItem("user_info") == ""
     ) {
       this.route.navigate(["login"]);
+      this.decBool=true
+      this.logBool = false
     }
   }
 }

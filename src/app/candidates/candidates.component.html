@@ -13,12 +13,105 @@
       </div>
     </div>
     <div class="card-body">
+      <form [formGroup]="filterCdt_form">
+        <div class="row wrapper">
+          <div class="col-sm-3">
+            <label for="email">Poste</label>
+            <ng-select
+              [items]="postesList"
+              bindLabel="name"
+              placeholder="Selectionner"
+              formControlName="postes"
+              appendTo="body"
+              [searchable]="true"
+              [clearable]="true"
+            >
+            </ng-select>
+          </div>
+          <div class="col-sm-3">
+            <label for="email">Ville</label>
+            <ng-select
+              [items]="villesList"
+              bindLabel="name"
+              placeholder="Selectionner"
+              formControlName="villes"
+              appendTo="body"
+              [searchable]="true"
+              [clearable]="true"
+            >
+            </ng-select>
+          </div>
+          <div class="col-sm-3">
+            <label for="email">Niveau academique</label>
+            <ng-select
+              [items]="academicLevelList"
+              bindLabel="name"
+              placeholder="Selectionner"
+              formControlName="acdemicLevels"
+              appendTo="body"
+              [searchable]="true"
+              [clearable]="true"
+            >
+            </ng-select>
+          </div>
+          <div class="col-sm-3">
+            <label for="email">Domaine d'étude</label>
+            <ng-select
+              [items]="specialityList"
+              bindLabel="name"
+              placeholder="Selectionner"
+              appendTo="body"
+              [searchable]="true"
+              [clearable]="true"
+              formControlName="speciality"
+            >
+            </ng-select>
+          </div>
+          <div class="col-sm-3">
+            <label for="email">N° d'année d'experience</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="expNumber"
+              placeholder="N° d'année d'experience "
+            />
+          </div>
+          <div class="col-sm-3">
+            <br />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="filter_candidate()"
+            >
+              Rechercher
+            </button>
+          </div>
+        </div>
+      </form>
+      <br />
+      <br />
+      <div class="form-group">
+        <input
+          type="texte"
+          class="form-control col-2 mb-2"
+          placeholder="Search"
+          [(ngModel)]="cdt_search"
+          (ngModelChange)="Search_cdt()"
+        />
+      </div>
       <div class="table_wrapper">
         <table class="table table-bordered">
           <thead>
             <tr>
+              <th
+                scope="col"
+                (click)="sort_site(key)"
+                style="display: none; visibility: hidden"
+              ></th>
               <th scope="col">#</th>
               <th scope="col">Nom complet</th>
+              <th scope="col">Code</th>
+              <th scope="col">Email</th>
               <th scope="col">Date de naissance</th>
               <th scope="col">Sexe</th>
               <th scope="col">Civilité</th>
@@ -26,6 +119,7 @@
               <th scope="col">Téléphone</th>
               <th scope="col">Nationalité</th>
               <th scope="col">Ville de residance</th>
+              <th scope="col">Postes solicités</th>
               <th scope="col">Type de pers</th>
               <th scope="col">Specialté</th>
               <th scope="col">Niv.Academique</th>
@@ -35,25 +129,68 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Otto</td>
+            <tr
+              *ngFor="
+                let cdt of candidatesList
+                  | paginate
+                    : {
+                        itemsPerPage: 10,
+                        currentPage: p_cdt
+                      };
+                let i = index
+              "
+              (click)="ClickedRowCdt(cdt)"
+            >
+              <th scope="row" style="display: none; visibility: hidden">
+                {{ cdt.oid }}
+              </th>
+              <th scope="row">{{ i }}</th>
+              <td>{{ cdt.fullname }}</td>
+              <td>{{ cdt.codeCdt }}</td>
+              <td>{{ cdt.email }}</td>
+              <td>{{ cdt.birthDate | date: "dd/MM/yyyy" }}</td>
+              <td>{{ cdt.sexe }}</td>
+              <td>{{ cdt.civility.name }}</td>
+              <td>{{ cdt.adress }}</td>
+              <td>{{ cdt.phone }}</td>
+              <td>{{ cdt.nationality.name }}</td>
+              <td>{{ cdt.villes.name }}</td>
+              <td>
+                <li *ngFor="let cdtP of cdt.cdtPostes">
+                  {{ cdtP.postes.name }}
+                </li>
+              </td>
+              <td>{{ cdt.types.name }}</td>
+              <td>{{ cdt.speciality.name }}</td>
+              <td>{{ cdt.academicLevels.name }}</td>
+              <td>{{ cdt.states.name }}</td>
+              <td>{{ cdt.exprience_num }}</td>
+              <td align="center">
+                <a> <i class="fa fa-eye fa-fw"></i></a>
+                <a
+                  href="#updCdtModal"
+                  class="ml-3"
+                  data-toggle="modal"
+                  data-target=".bd-updCdtModal-modal-lg"
+                >
+                  <i class="fa fa-edit"></i
+                ></a>
+                <a class="ml-3" (click)="downloadCV(cdt)">
+                  <i class="fa fa-download"></i
+                ></a>
+                <a class="ml-3">
+                  <i class="fa fa-trash fa-fw text-danger"></i
+                ></a>
+              </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <br />
+      <div class="form-group">
+        <pagination-controls
+          (pageChange)="p_cdt = $event"
+        ></pagination-controls>
       </div>
     </div>
   </div>
@@ -82,48 +219,745 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="" method="post">
+        <form
+          [formGroup]="candidate_form"
+          (ngSubmit)="save_candate()"
+          #localForm="ngForm"
+          enctype="multipart/form-data"
+        >
           <!-- User's Credentials  -->
           <fieldset class="form-group border p-3">
-            <legend class="w-auto px-2">User's Credentials</legend>
-            <div class="form-group">
-              <label for="username">Username:</label>
-              <input
-                type="text"
-                class="form-control username"
-                id="username"
-                placeholder="Username..."
-                name="username"
-              />
-            </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input
-                type="email"
-                class="form-control email"
-                id="email"
-                placeholder="Email..."
-                name="email"
-              />
-            </div>
-            <div class="form-group">
-              <label for="password">Password:</label>
-              <input
-                type="password"
-                class="form-control password"
-                id="password"
-                placeholder="Password..."
-                name="password"
-              />
+            <legend class="w-auto px-2">Information d'identification</legend>
+            <div class="row">
+              <div class="col-sm-12 mobile-inputs">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Nom complet *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Nom complet"
+                      formControlName="fullname"
+                      [(ngModel)]="candidates.fullname"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && fullname_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                    <input
+                      type="hidden"
+                      class="form-control"
+                      formControlName="oid"
+                      required
+                    />
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">N° de Telephone *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="N° de Telephone"
+                      formControlName="phone"
+                      [(ngModel)]="candidates.phone"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && phone_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                      formControlName="email"
+                      [(ngModel)]="candidates.email"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && email_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Sexe *</label>
+                    <ng-select
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="sexe"
+                    >
+                      <ng-option value="Homme">Homme</ng-option>
+                      <ng-option value="Femme">Femme</ng-option>
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && sexe_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Nationnalité *</label>
+                    <ng-select
+                      [items]="nationalityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="nationality"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && nationality_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Statut matiomonial *</label>
+                    <ng-select
+                      [items]="civilityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="civility"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && civility_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">N° d'enfant *</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="N° d'enfant"
+                      [(ngModel)]="candidates.childrenNum"
+                      formControlName="childrenNum"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && childrenNum_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Ville de residance *</label>
+                    <ng-select
+                      [items]="villesList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="villes"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && villes_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Quartier:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Quartier"
+                      [(ngModel)]="candidates.quartier"
+                      formControlName="quartier"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && quartier_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Adresse de residance:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Adresse"
+                      [(ngModel)]="candidates.adress"
+                      formControlName="adress"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && adress_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Date de naissance *</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="birthDate"
+                      (ngModelChange)="candidate_change_input()"
+                      [max]="getToday()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && birthDate_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </fieldset>
+          <fieldset class="form-group border p-3">
+            <legend class="w-auto px-2">
+              Information academique et professionelle
+            </legend>
+            <div class="row">
+              <div class="col-sm-12 mobile-inputs">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Domaine d'étude *</label>
+                    <ng-select
+                      [items]="specialityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="speciality"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && speciality_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Niveau academique *</label>
+                    <ng-select
+                      [items]="academicLevelList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="academicLevels"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && academicLevels_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Type de personnel *</label>
+                    <ng-select
+                      [items]="typesList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="types"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && types_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Poste solicité *</label>
+                    <ng-select
+                      [items]="postesList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      multiple="true"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="postes"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localForm.submitted && postes_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">N° d'année d'experience *</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="N° d'année d'experience "
+                      [(ngModel)]="candidates.exprience_num"
+                      formControlName="exprience_num"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && exprience_num_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">CV *</label>
+                    <input
+                      type="file"
+                      class="form-control"
+                      formControlName="cv_file"
+                      (ngModelChange)="candidate_change_input()"
+                      (change)="onFileChangedCV($event)"
+                    />
+                    <span
+                      *ngIf="localForm.submitted && cv_file_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    ><br />
+                    <span [hidden]="file_statut" style="color: red"
+                      >Format PDF requit</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-warning"
+              data-dismiss="modal"
+              (click)="cancel_candidate_new()"
+            >
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">Enreigistrer</button>
+          </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal">
-          Annuler
+    </div>
+  </div>
+</div>
+
+<!-- Update Candidate Modal -->
+<div
+  class="modal fade bd-updCdtModal-modal-lg"
+  id="updCdtModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="updCdtModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updCdtModalLabel">Nouveau candidat</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
         </button>
-        <button type="button" class="btn btn-primary">Enreigistrer</button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="updateCdt_form"
+          #localFormUpdt="ngForm"
+          (ngSubmit)="update_candate()"
+          enctype="multipart/form-data"
+        >
+          <!-- User's Credentials  -->
+          <fieldset class="form-group border p-3">
+            <legend class="w-auto px-2">Information d'identification</legend>
+            <div class="row">
+              <div class="col-sm-12 mobile-inputs">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Nom complet *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Nom complet"
+                      formControlName="fullname"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && fullname_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                    <input
+                      type="hidden"
+                      class="form-control"
+                      formControlName="oid"
+                      required
+                    />
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">N° de Telephone *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="N° de Telephone"
+                      formControlName="phone"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localFormUpdt.submitted && phone_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                      formControlName="email"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localFormUpdt.submitted && email_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Sexe *</label>
+                    <ng-select
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="sexe"
+                    >
+                      <ng-option value="Homme">Homme</ng-option>
+                      <ng-option value="Femme">Femme</ng-option>
+                    </ng-select>
+                    <span
+                      *ngIf="localFormUpdt.submitted && sexe_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Nationnalité *</label>
+                    <ng-select
+                      [items]="nationalityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="nationality"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && nationality_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Statut matiomonial *</label>
+                    <ng-select
+                      [items]="civilityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="civility"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && civility_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">N° d'enfant *</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="N° d'enfant"
+                      formControlName="childrenNum"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && childrenNum_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Ville de residance *</label>
+                    <ng-select
+                      [items]="villesList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="villes"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localFormUpdt.submitted && villes_cdtUdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Quartier:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Quartier"
+                      formControlName="quartier"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && quartier_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Adresse de residance:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Adresse"
+                      formControlName="adress"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="localFormUpdt.submitted && adress_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Date de naissance *</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="birthDate"
+                      (ngModelChange)="candidate_change_input()"
+                      [value]="dateSelected | date: 'yyyy-MM-dd'"
+                      [max]="getToday()"
+                    />
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && birthDate_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="form-group border p-3">
+            <legend class="w-auto px-2">
+              Information academique et professionelle
+            </legend>
+            <div class="row">
+              <div class="col-sm-12 mobile-inputs">
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Domaine d'étude *</label>
+                    <ng-select
+                      [items]="specialityList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="speciality"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && speciality_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Niveau academique *</label>
+                    <ng-select
+                      [items]="academicLevelList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="academicLevels"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted &&
+                        academicLevels_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">Type de personnel *</label>
+                    <ng-select
+                      [items]="typesList"
+                      bindLabel="name"
+                      placeholder="Selectionner"
+                      appendTo="body"
+                      [searchable]="true"
+                      [clearable]="true"
+                      formControlName="types"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localFormUpdt.submitted && types_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">Poste solicité *</label>
+                    <ng-select
+                      [items]="postesList"
+                      bindLabel="name"
+                      placeholder="Select item"
+                      appendTo="body"
+                      multiple="true"
+                      [searchable]="true"
+                      [clearable]="true"
+                      [(ngModel)]="selectedCar"
+                      formControlName="postes"
+                    >
+                    </ng-select>
+                    <span
+                      *ngIf="localFormUpdt.submitted && postes_cdtUpdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6">
+                    <label for="email">N° d'année d'experience *</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="N° d'année d'experience "
+                      formControlName="exprience_num"
+                      (ngModelChange)="candidate_change_input()"
+                    />
+                    <span
+                      *ngIf="
+                        localFormUpdt.submitted && exprience_num_cdtUpdt.invalid
+                      "
+                      style="color: red"
+                      >champ obligatoire</span
+                    >
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="email">CV *</label>
+                    <input
+                      type="file"
+                      class="form-control"
+                      formControlName="cv_file"
+                      (ngModelChange)="candidate_change_input()"
+                      (change)="onFileChangedCVUpdt($event)"
+                    />
+                    <!-- <span
+                      *ngIf="localForm.submitted && cv_file_cdt.invalid"
+                      style="color: red"
+                      >champ obligatoire</span
+                    > -->
+                    <br />
+                    <span [hidden]="fileUpdt_statut" style="color: red"
+                      >Format PDF requit</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-success">Enreigistrer</button>
+          </div>
+        </form>
+        <!-- data-dismiss="modal" -->
       </div>
     </div>
   </div>

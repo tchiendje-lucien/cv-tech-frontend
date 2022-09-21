@@ -211,7 +211,7 @@
     <!-- ============================================================== -->
     <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
       <div class="card">
-        <h5 class="card-header">Poste du candidat</h5>
+        <h5 class="card-header">Poste Solicité</h5>
         <div class="card-body">
           <form
             [formGroup]="postes_form"
@@ -628,7 +628,7 @@
       </div>
     </div>
 
-        <!-- ============================================================== -->
+    <!-- ============================================================== -->
     <!-- Rules table -->
     <!-- ============================================================== -->
     <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -733,5 +733,109 @@
       </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- Civility table -->
+    <!-- ============================================================== -->
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <h5 class="card-header">Statut matrimonial</h5>
+        <div class="card-body">
+          <form
+            [formGroup]="civility_form"
+            (ngSubmit)="add_civility(civility_form.value)"
+          >
+            <div class="row">
+              <div class="form-group mx-sm-3 mb-2">
+                <input
+                  type="texte"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [(ngModel)]="civility.name"
+                  placeholder="Entrer le nom"
+                  (ngModelChange)="civility_change_input()"
+                  required
+                />
+                <input
+                  type="hidden"
+                  class="form-control"
+                  formControlName="oid"
+                  required
+                />
+                <span
+                  *ngIf="civility_name.invalid && civility_name.touched"
+                  style="color: red"
+                  >champ obligatoire</span
+                >
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-primary btn-create"
+                  [disabled]="btn_state_civility"
+                >
+                  Enreigister
+                </button>
+              </div>
+              <div class="col col-xs-6 text-right">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-warning btn-create"
+                  [disabled]="btn_state_civility"
+                  (click)="cancel_civility()"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+          <br />
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" style="display: none; visibility: hidden"></th>
+                <th scope="col"># &nbsp;<i class="fa fa-sort"></i></th>
+                <th scope="col">Noms</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let civility_elt of civilityList
+                    | paginate
+                      : {
+                          itemsPerPage: 3,
+                          currentPage: p_civility,
+                          id: 'p_civility_id'
+                        };
+                  let i = index
+                "
+                (click)="ClickedRowCivility(civility_elt)"
+              >
+                <th scope="row" style="display: none; visibility: hidden">
+                  {{ civility_elt.oid }}
+                </th>
+                <th scope="row">{{ i }}</th>
+                <td>{{ civility_elt.name }}</td>
+                <td align="center">
+                  <a href="#"> <i class="fa fa-eye fa-fw text-warning"></i></a>
+                  <a href="#" class="ml-4">
+                    <i class="fa fa-trash fa-fw text-danger"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div class="form-group">
+            <pagination-controls
+              id="p_civility_id"
+              (pageChange)="p_civility = $event"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

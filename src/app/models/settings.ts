@@ -38,6 +38,11 @@ export class AcademicLevel {
   name: string;
 }
 
+export class Civility {
+  oid: number;
+  name: string;
+}
+
 export const myConst = {
   url: "http://127.0.0.1:8080/",
 };

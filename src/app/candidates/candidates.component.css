@@ -1,6 +1,11 @@
+
+
 .table_wrapper{
   display: block;
   overflow-x: auto;
   white-space: nowrap;
 }
 
+.bootstrap-select.btn-group .dropdown-menu.inner {
+  display: block;
+}

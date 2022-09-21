@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Types } from "src/app/models/settings";
+import { Civility } from '../../models/settings';
 import {
   myConst,
   AcademicLevel,
@@ -102,5 +103,17 @@ export class SettingService {
 
   list_rules() {
     return this.http.get(myConst.url.concat("list_rule"));
+  }
+
+  post_civility(civility: Civility){
+    return this.http.post(myConst.url.concat("add_civility"), civility)
+  }
+
+  update_civility(civility: Civility){
+    return this.http.put(myConst.url.concat("update_civility"), civility)
+  }
+
+  list_civility(){
+    return this.http.get(myConst.url.concat("list_civility"))
   }
 }

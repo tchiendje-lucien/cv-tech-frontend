@@ -74,4 +74,8 @@ export class LoginComponent implements OnInit {
       alert("Veillez remplir tous les champs");
     }
   }
+
+  logout(){
+    localStorage.removeItem('user_info');
+  }
 }

@@ -9,7 +9,7 @@ import {
   AcademicLevel,
 } from "../models/settings";
 import { SettingService } from "../services/settingServices/setting.service";
-import { Nationality, Rules } from '../models/settings';
+import { Nationality, Rules, Civility } from "../models/settings";
 
 @Component({
   selector: "app-settings",
@@ -24,7 +24,8 @@ export class SettingsComponent implements OnInit {
   villes: Villes;
   academicLevel: AcademicLevel;
   nationality: Nationality;
-  rules:Rules
+  rules: Rules;
+  civility: Civility;
 
   //List Propriety
   typesList: Types[];
@@ -33,7 +34,8 @@ export class SettingsComponent implements OnInit {
   villesList: Villes[];
   academicLevelList: AcademicLevel[];
   nationalityList: Nationality[];
-  rulesList:Rules[]
+  rulesList: Rules[];
+  civilityList: Civility[];
 
   //Other Proriety
   btn_state_type: boolean = true;
@@ -42,7 +44,8 @@ export class SettingsComponent implements OnInit {
   btn_state_villes: boolean = true;
   btn_state_academicLevel: boolean = true;
   btn_state_nationality: boolean = true;
-  btn_state_rules:boolean=true
+  btn_state_rules: boolean = true;
+  btn_state_civility: boolean = true;
   reverse: boolean = false;
   key: string = "id";
   p_type: number = 1;
@@ -51,7 +54,8 @@ export class SettingsComponent implements OnInit {
   p_villes: number = 1;
   p_academicLevel: number = 1;
   p_nationality: number = 1;
-  p_rules:number=1
+  p_rules: number = 1;
+  p_civility = 1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,14 +69,16 @@ export class SettingsComponent implements OnInit {
     this.villes = new Villes();
     this.academicLevel = new AcademicLevel();
     this.nationality = new Nationality();
-    this.rules = new Rules()
+    this.rules = new Rules();
+    this.civility = new Civility();
     this.list_types();
     this.list_speciality();
     this.list_postes();
     this.list_villes();
     this.list_academicLevel();
     this.list_nationality();
-    this.list_rules()
+    this.list_rules();
+    this.list_civility();
   }
 
   type_form = this.formBuilder.group({
@@ -110,6 +116,10 @@ export class SettingsComponent implements OnInit {
     name: new FormControl("", Validators.required),
   });
 
+  civility_form = this.formBuilder.group({
+    oid: new FormControl(-1, Validators.required),
+    name: new FormControl("", Validators.required),
+  });
 
   get types_name() {
     return this.type_form.get("name");
@@ -131,6 +141,10 @@ export class SettingsComponent implements OnInit {
   }
   get rules_name() {
     return this.rules_form.get("name");
+  }
+
+  get civility_name() {
+    return this.civility_form.get("name");
   }
 
   //Types Management
@@ -180,7 +194,6 @@ export class SettingsComponent implements OnInit {
     this.settingServices.list_types().subscribe({
       next: (response) => {
         this.typesList = response as Array<Types>;
-        console.log(this.typesList);
       },
       error: (e) => {
         console.log(e.error);
@@ -548,19 +561,31 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-    //Rules Management
-    rules_change_input() {
-      if (this.rules.name == null || this.rules.name == "") {
-        this.btn_state_rules = true;
-      } else {
-        this.btn_state_rules = false;
-      }
+  //Rules Management
+  rules_change_input() {
+    if (this.rules.name == null || this.rules.name == "") {
+      this.btn_state_rules = true;
+    } else {
+      this.btn_state_rules = false;
     }
+  }
 
-    add_rules() {
-      if (this.rules_form.valid) {
-        if (this.rules_form.get("oid").value == -1) {
-          this.settingServices.post_rules(this.rules).subscribe({
+  add_rules() {
+    if (this.rules_form.valid) {
+      if (this.rules_form.get("oid").value == -1) {
+        this.settingServices.post_rules(this.rules).subscribe({
+          next: (response) => {
+            alert(response["message"]);
+            this.list_rules();
+            this.cancel_rules();
+          },
+          error: (e) => {
+            console.log(e.error);
+          },
+        });
+      } else {
+        if (confirm("voullez vous vraiment effectuer cette modification?")) {
+          this.settingServices.update_rules(this.rules_form.value).subscribe({
             next: (response) => {
               alert(response["message"]);
               this.list_rules();
@@ -571,49 +596,106 @@ export class SettingsComponent implements OnInit {
             },
           });
         } else {
-          if (confirm("voullez vous vraiment effectuer cette modification?")) {
-            this.settingServices.update_rules(this.rules_form.value).subscribe({
+          this.cancel_rules();
+        }
+      }
+    } else {
+      alert("Veillez remplir tous les champs");
+    }
+  }
+
+  list_rules() {
+    this.settingServices.list_rules().subscribe({
+      next: (response) => {
+        this.rulesList = response as Array<Rules>;
+      },
+      error: (e) => {
+        console.log(e.error);
+      },
+    });
+  }
+
+  ClickedRowRules(index) {
+    this.rules_form.patchValue({
+      oid: index.oid,
+      name: index.name,
+    });
+  }
+  cancel_rules() {
+    this.rules_form.patchValue({
+      oid: -1,
+      code: null,
+      name: null,
+    });
+  }
+
+  //Civility Management
+  civility_change_input() {
+    if (this.civility.name == null || this.civility.name == "") {
+      this.btn_state_civility = true;
+    } else {
+      this.btn_state_civility = false;
+    }
+  }
+
+  add_civility() {
+    if (this.civility_form.valid) {
+      if (this.civility_form.get("oid").value == -1) {
+        this.settingServices.post_civility(this.civility).subscribe({
+          next: (response) => {
+            alert(response["message"]);
+            this.list_civility();
+            this.cancel_civility();
+          },
+          error: (e) => {
+            console.log(e.error);
+          },
+        });
+      } else {
+        if (confirm("voullez vous vraiment effectuer cette modification?")) {
+          this.settingServices
+            .update_civility(this.civility_form.value)
+            .subscribe({
               next: (response) => {
                 alert(response["message"]);
-                this.list_rules();
-                this.cancel_rules();
+                this.list_civility();
+                this.cancel_civility();
               },
               error: (e) => {
                 console.log(e.error);
               },
             });
-          } else {
-            this.cancel_rules();
-          }
+        } else {
+          this.cancel_civility();
         }
-      } else {
-        alert("Veillez remplir tous les champs");
       }
+    } else {
+      alert("Veillez remplir tous les champs");
     }
+  }
 
-    list_rules() {
-      this.settingServices.list_rules().subscribe({
-        next: (response) => {
-          this.rulesList = response as Array<Rules>;
-        },
-        error: (e) => {
-          console.log(e.error);
-        },
-      });
-    }
+  list_civility() {
+    this.settingServices.list_civility().subscribe({
+      next: (response) => {
+        this.civilityList = response as Array<Civility>;
+      },
+      error: (e) => {
+        console.log(e.error);
+      },
+    });
+  }
 
-    ClickedRowRules(index) {
-      this.rules_form.patchValue({
-        oid: index.oid,
-        name: index.name,
-      });
-    }
-    cancel_rules() {
-      this.rules_form.patchValue({
-        oid: -1,
-        code: null,
-        name: null,
-      });
-    }
-
+  ClickedRowCivility(index) {
+    this.civility_form.patchValue({
+      oid: index.oid,
+      name: index.name,
+    });
+  }
+  cancel_civility() {
+    this.civility_form.patchValue({
+      oid: -1,
+      code: null,
+      name: null,
+    });
+  }
 }

@@ -937,7 +937,8 @@ a.mytooltip {
     display: inherit;
     float: none; }
 
-.jstree-default > .jstree-container-ul .jstree-loading > .jstree-ocl {}
+.jstree-default > .jstree-container-ul .jstree-loading > .jstree-ocl {
+  background: url("../pages/treeview/throbber.gif") center center no-repeat; }
 
 /**====== Tree-view css end ======**/
 /**  =====================
@@ -14805,6 +14806,7 @@ pre.line-numbers > code {
     -webkit-transition: all ease-in 0.3s;
     transition: all ease-in 0.3s; }
     #task-container li.complete:before {
+      background: url("../images/complete.png") no-repeat;
       position: absolute;
       top: 5px;
       right: 5px;

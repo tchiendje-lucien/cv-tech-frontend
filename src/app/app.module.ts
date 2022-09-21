@@ -14,6 +14,7 @@ import { DecorationComponent } from './decoration/decoration.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CandidatesComponent } from './candidates/candidates.component';
 import { UsersComponent } from './users/users.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { UsersComponent } from './users/users.component';
     ReactiveFormsModule,
     Ng2SearchPipeModule,
     NgxPaginationModule,
-    Ng2OrderModule
+    Ng2OrderModule,
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
